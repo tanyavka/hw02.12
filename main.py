@@ -29,10 +29,10 @@ def get_info():
 
 @app.get("/get/all")
 def get_all_cves():
-    five_days_ago = datetime.now() - timedelta(days=5)
+    ten_days_ago = datetime.now() - timedelta(days=10)
     recent_cves = [
         cve for cve in cve_data
-        if datetime.strptime(cve["dateAdded"], "%Y-%m-%d") >= five_days_ago
+        if datetime.strptime(cve["dateAdded"], "%Y-%m-%d") >= ten_days_ago
     ]
     return recent_cves[:40]
 
@@ -54,7 +54,7 @@ def get_known_ransomware():
 def search_cves(query: str = Query(...)):
     filtered_cves = [
         cve for cve in cve_data if query.lower() in cve["cveID"].lower()
-        or query.lower() in cve.get("description", "").lower()
+        or query.lower() in cve.get("shortDescription", "").lower()
     ]
     return filtered_cves
 
